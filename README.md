@@ -1,39 +1,65 @@
-# js-renderer
+# js-renderer-api
+**js-renderer-api**  es un servicio en línea que permite renderizar páginas web con JavaScript (JS) utilizando la biblioteca Puppeteer. Es una herramienta ideal para tareas de scraping web, ya que no depende de Splash y ofrece una ejecución rápida y eficiente.
 
-JS renderer is an online puppeteer service to render pages with javascript (js). Mainly useful for web scraping (not using splash).
+**¿Qué es el scraping web?**
 
-At times while scraping web pages you will come across websites or web pages that only render on a browser that renders the loaded javascript. If you curl it or use something like [Scrapy](https://scrapy.org/), you just end up with not useful HTML.
+El scraping web es una técnica que consiste en extraer información de páginas web de forma automatizada. Esto se puede hacer para recopilar datos para análisis, investigación o incluso para automatizar tareas repetitivas.
 
-This project aims to solve that issue with Puppeteer. With Scrapy you can use [Splash](https://github.com/scrapy-plugins/scrapy-splash) but it is Scrapy specific and not easy to configure.
+**¿Por qué utilizar js-renderer-api para scraping web?**
 
-## Uses
+js-renderer-api ofrece varias ventajas para el scraping web:
 
-This project uses Puppeteer to render the page as a full browser and Express to open Puppeter as an API.
+-   **Ejecución con JavaScript:**  Al utilizar Puppeteer, js-renderer-api permite ejecutar JavaScript en el contexto de las páginas web, lo que proporciona un mayor control sobre el proceso de scraping.
+-   **Rapidez y eficiencia:**  js-renderer-api está optimizado para la velocidad y la eficiencia, lo que lo convierte en una herramienta ideal para tareas de scraping a gran escala.
+-   **Independencia de Splash:**  A diferencia de otras herramientas de scraping web, js-renderer-api no depende de Splash, lo que simplifica su uso y reduce la complejidad de la configuración.
 
-## Run locally
+# Instalación
 
-If you have node install you can do:
+Para utilizar este proyecto, por favor asegúrese de tener Node.js y npm instalados en su computadora.
 
-```
-npm install
-npm start
-```
+`npm install` 
 
-If you want to run with docker, execute the following:
+# Instalar dependencies  
+Para instalar las dependencias necesarias, ejecute el comando anterior.
 
-```
-npm install
-docker-compose up
-```
+    npm install
 
-The hit `http://localhost:8080/api/render?url=https://instagram.com`
+## Uso
 
-## How to use it
+Para utilizar este proyecto, puede hacerlo enviando solicitudes HTTP a los siguientes endpoints:
 
-If you want to use it for scraping, use the following URL on Vercel:
+    http://localhost:8080/api/render?url=https://www.example.com
 
-https://js-renderer.now.sh/api/render?url=https://instagram.com
+### `/`  (GET)
 
-### Styles broken
+Responde con un mensaje que indica que el servicio está activo.
 
-Styles and images will look broken but the HTML tags will be there. Happy Web Scraping!
+### `/api/render`  (GET)
+
+Para renderizar una página web, envíe un parámetro  `url`  en la query string. Por ejemplo:  `http://localhost:8080/api/render?url=https://www.example.com`
+
+Responde con el contenido de la página renderizada.
+
+# Configuración
+
+Para cambiar el puerto en el que el servicio se ejecuta, puede hacerlo configurando la variable de entorno  `PORT`  en el archivo  `package.json`. Por ejemplo:
+
+`"scripts": {
+  "start": "node index.js --port 8081"
+}` 
+
+
+# Autor 
+
+El proyecto original fue creado por Geshan, sin embargo esta versión es una modificación del código original. Se realizaron cambios para mejorar los siguientes aspectos:
+
+**Modificación en español**  
+Esta es una modificación del proyecto original que utiliza  `puppeteer`  en lugar de  `puppeteer-core`. Al utilizar  `puppeteer`, obtendrá las siguientes ventajas:
+
+-   Mejora la estabilidad y la escalabilidad del servicio
+-   Permite utilizar navegadores más recientes y seguros
+-   Ofrece más control sobre la configuración de la navegación y la renderización de páginas web
+-   Es compatible con diferentes sistemas operativos y arquitecturas
+
+**Originalmente basado en puppeteer-core**  
+El proyecto original utilizaba  `puppeteer-core`, que es una versión ligeramente modificada de  `puppeteer`. Aunque  `puppeteer-core`  es una excelente opción para proyectos pequeños y medianos,  `puppeteer`  ofrece más funcionalidades y mejoras para proyectos más grandes y complejos.
