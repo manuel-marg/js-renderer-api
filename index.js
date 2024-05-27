@@ -19,7 +19,8 @@ app.get('/api/render', async (req, res) => {
     });
 
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
+    await page.goto(url);
+    await page.waitForTimeout(30000)
     const pageContent = await page.content();
     console.log(`Mostrando los primeros 200 caracteres de ${url} : ${pageContent.substring(0, 200)}`);
     await browser.close();
