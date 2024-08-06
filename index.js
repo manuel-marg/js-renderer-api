@@ -1,38 +1,37 @@
-const express = require('express');
 const puppeteer = require('puppeteer');
 
+const express = require('express');
 const app = express();
+const port = 3000;
 
-app.get('/', (req, res) => {
-  res.json({ message: 'alive' });
+app.get('/', async (req, res) => {
+    const {url} = req.query;
+    if(!url) {
+        res.status(400).send("Bad request: 'url' param is missing!");
+        return;
+    }
+
+    try {
+        const html = await getPageHTML(url);
+
+        res.status(200).send(html);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
-app.get('/api/render', async (req, res) => {
-  const url = req.query.url;
-  if (!url) {
-    return res.send('Por favor, proporciona una URL');
-  }
-  try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      ignoreHTTPSErrors: true,
-    });
-
+const getPageHTML = async (pageUrl) => {
+    const browser = await puppeteer.launch();
+  
     const page = await browser.newPage();
-    await page.goto(url);
-    await page.waitForTimeout(30000)
-    const pageContent = await page.content();
-    console.log(`Mostrando los primeros 200 caracteres de ${url} : ${pageContent.substring(0, 200)}`);
+  
+    await page.goto(pageUrl);
+  
+    const pageHTML = await page.evaluate('new XMLSerializer().serializeToString(document.doctype) + document.documentElement.outerHTML');
+  
     await browser.close();
+  
+    return pageHTML;
+}
 
-    res.send(pageContent);
-  } catch (err) {
-    console.log(`Error al obtener ${url} `, err);
-    res.send(`Error al obtener ${url}`);
-  }
-});
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log('Servidor listo!');
-});
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
